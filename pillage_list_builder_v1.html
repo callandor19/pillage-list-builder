@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Pillage List Builder</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background-color: white;
+      color: black;
+      margin: 20px;
+    }
+    h1 {
+      font-size: 2em;
+      font-weight: bold;
+      text-align: center;
+      color: #333;
+      border-bottom: 2px solid #999;
+      padding-bottom: 10px;
+    }
+    label {
+      font-weight: bold;
+      color: #222;
+      display: block;
+      margin-bottom: 6px;
+    }
+    select,
+    input[type="number"] {
+      background-color: #fff;
+      color: #000;
+      border: 1px solid #666;
+      padding: 4px;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #444;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      margin: 5px 3px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+    }
+    button:hover {
+      background-color: #666;
+    }
+    #unitsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .unit-block {
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+    .unit-cost-display {
+      font-weight: bold;
+      margin-top: 6px;
+      color: #003366;
+      font-size: 14px;
+    }
+    .warning {
+      color: #c00;
+      font-weight: bold;
+    }
+    pre {
+      background-color: #f0f0f0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      font-family: 'Georgia', serif;
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+    /* Checkbox container columns for options */
+    .options-container {
+      display: flex;
+      gap: 20px;
+      margin-top: 8px;
+    }
+    .options-column {
+      flex: 1;
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      border-radius: 5px;
+      background: #fff;
+    }
+    .options-column label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: normal;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pillage List Builder</h1>
+
+  <label for="factionSelect">Select Faction:</label>
+  <select id="factionSelect">
+    <option value="">--Choose a faction--</option>
+  </select>
+
+  <div>
+    <label for="maxCost">Max Cost:</label>
+    <input type="number" id="maxCost" value="500" />
+  </div>
+
+  <div
+    id="mainLayout"
+    style="display: flex; gap: 20px; align-items: flex-start; margin-top: 20px;"
+  >
+    <div id="unitsWrapper" style="flex: 1;">
+      <div id="unitsContainer"></div>
+      <button id="addUnitButton">Add Figure</button>
+      <button id="addChieftainButton">Add Chieftain</button>
+    </div>
+
+    <div
+      id="exportWrapper"
+      style="
+        flex: 1;
+        gap: 20px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      "
+    >
+      <h2>Total Cost: <span id="totalCost">0</span></h2>
+      <div id="warning" class="warning"></div>
+      <button onclick="downloadExportedUnits()">Download as .txt</button>
+      <button onclick="printExportedUnits()">Print</button>
+      <pre id="exportOutput"></pre>
+    </div>
+  </div>
+
+  <script src="factionData.js"></script>
+  <script>
+    let unitId = 0;
+
+    function populateFactions() {
+      const select = document.getElementById("factionSelect");
+      const options = Object.keys(factionData).sort();
+      for (let faction of options) {
+        const opt = document.createElement("option");
+        opt.value = faction;
+        opt.textContent = faction;
+        select.appendChild(opt);
+      }
+    }
+
+    // Map categories to column names for layout:
+    const optionColumnsMap = {
+      Protection: "Protection",
+      "Melee Weapon": "Melee",
+      "Ranged Weapon": "Ranged",
+      "Special Equipment": "Special",
+    };
+
+    // Build checkboxes options for a unit
+    function buildOptions(id) {
+      const faction = document.getElementById("factionSelect").value;
+      if (!faction) return;
+
+      const unitType = document.getElementById(`unitType-${id}`).value;
+      const unitData = factionData[faction][unitType];
+      if (!unitData) {
+        document.getElementById(`options-${id}`).innerHTML = "";
+        return;
+      }
+
+      let baseCostText = `<p>Base Cost: ${unitData.base}</p>`;
+
+      // Prepare columns for checkbox groups:
+      let columns = {
+        Protection: [],
+        Melee: [],
+		Ranged: [],
+        Special: [],
+      };
+
+      // For each category, create checkboxes grouped into the right column:
+      for (let category in unitData.options) {
+        const opts = unitData.options[category];
+        if (!opts || Object.keys(opts).length === 0) continue;
+
+        let colKey = optionColumnsMap[category] || "Special";
+
+        // Create a label for each option with checkbox:
+        for (let optName in opts) {
+          const cost = opts[optName];
+          const isDefault = false
+           
+          columns[colKey].push(
+            `<label><input type="checkbox" class="optionCheckbox" data-category="${category}" data-cost="${cost}" value="${optName}" ${
+              isDefault ? "checked" : ""
+            } /> ${optName} (${cost})</label>`
+          );
+        }
+      }
+
+      // Compose the HTML with columns:
+      let html = baseCostText + '<div class="options-container">';
+      for (const colName of ["Protection", "Melee", "Ranged", "Special"]) {
+        html += `<div class="options-column"><strong>${colName}</strong><br />`;
+        if (columns[colName].length > 0) {
+          html += columns[colName].join("\n");
+        } else {
+          html += "<em>None</em>";
+        }
+        html += "</div>";
+      }
+      html += "</div>";
+
+      document.getElementById(`options-${id}`).innerHTML = html;
+
+      // Add event listeners to checkboxes to update cost on change:
+      const container = document.getElementById(`options-${id}`);
+      const checkboxes = container.querySelectorAll(".optionCheckbox");
+      checkboxes.forEach((cb) => {
+        cb.addEventListener("change", () => updateCost());
+      });
+
+      // Update cost and export (small delay to ensure DOM updates)
+      setTimeout(() => {
+        updateCost();
+      }, 0);
+    }
+
+    // Refresh cost preview and show export
+    function updateCost() {
+      const faction = document.getElementById("factionSelect").value;
+      if (!faction) return;
+
+      let totalCost = 0;
+      let chieftainCount = 0,
+        warriorCount = 0;
+      let bannerCount = 0,
+        warhornCount = 0,
+        rangedWeaponUnits = 0,
+        horseCount = 0,
+        unitCount = 0;
+
+      for (let i = 0; i < unitId; i++) {
+        const block = document.getElementById(`unit-${i}`);
+        if (!block) continue;
+
+        const typeElem = document.getElementById(`unitType-${i}`);
+        const qtyElem = document.getElementById(`unitQuantity-${i}`);
+        if (!typeElem || !qtyElem) continue;
+
+        const unitType = typeElem.value;
+        const quantity = Math.max(1, parseInt(qtyElem.value));
+        const unitData = factionData[faction]?.[unitType];
+        if (!unitData) continue;
+
+        const baseCost = unitData.base || 0;
+        let perUnitCost = baseCost;
+
+        const checkboxes = block.querySelectorAll(".optionCheckbox");
+        // Track if this unit has any ranged weapons checked:
+        let unitHasRangedWeapon = false;
+
+        checkboxes.forEach((cb) => {
+          if (!cb.checked) return;
+          const category = cb.dataset.category;
+          const cost = parseInt(cb.dataset.cost) || 0;
+          const val = cb.value;
+
+          perUnitCost += cost;
+
+          if (val === "Banner") bannerCount += quantity;
+          if (val === "Warhorn") warhornCount += quantity;
+          if (category === "Ranged Weapon") {
+            unitHasRangedWeapon = true;
+          }
+          if (category === "Special Equipment" && val === "Horse") {
+            horseCount += quantity;
+          }
+        });
+
+        totalCost += perUnitCost * quantity;
+        unitCount += quantity;
+
+        if (unitType === "Chieftain") chieftainCount += quantity;
+        if (unitType === "Warrior") warriorCount += quantity;
+
+        if (unitHasRangedWeapon) {
+          rangedWeaponUnits += quantity; // Count units with any ranged weapon(s)
+        }
+
+        const costDisplay = document.getElementById(`unitCost-${i}`);
+        if (costDisplay) {
+          const blockTotal = perUnitCost * quantity;
+          costDisplay.textContent = `Cost per figure: ${perUnitCost} (${blockTotal} total)`;
+        }
+      }
+
+      document.getElementById("totalCost").textContent = totalCost;
+
+      const max = parseInt(document.getElementById("maxCost").value);
+      let warnings = [];
+
+      if (totalCost > max) warnings.push("⚠️ Cost exceeds maximum!");
+      if (chieftainCount < 1)
+        warnings.push("⚠️ Your list must contain at least one Chieftain.");
+      const allowedChieftains = Math.floor(1 + warriorCount / 20);
+      if (chieftainCount > allowedChieftains)
+        warnings.push(
+          `⚠️ Only one Chieftain is allowed per 20 Warriors. (${chieftainCount}/${allowedChieftains} allowed)`
+        );
+      if (bannerCount > 1) warnings.push("⚠️ Only one Banner is allowed.");
+      if (warhornCount > 1) warnings.push("⚠️ Only one Warhorn is allowed.");
+
+      const maxRanged = Math.floor(unitCount * 0.25);
+      if (rangedWeaponUnits > maxRanged)
+        warnings.push(
+          `⚠️ Only up to 25% of figures can have a ranged weapon. (${rangedWeaponUnits}/${maxRanged} allowed)`
+        );
+      const maxHorse = Math.floor(unitCount * 0.25);
+      if (horseCount > maxHorse)
+        warnings.push(
+          `⚠️ Only up to 25% of figures can be mounted. (${horseCount}/${maxHorse} allowed)`
+        );
+
+      document.getElementById("warning").innerHTML = warnings.join("<br>");
+
+      showExportedUnits();
+    }
+
+	function showExportedUnits() {
+	  const output = document.getElementById("exportOutput");
+	  let exportText = "";
+
+	  const faction = document.getElementById("factionSelect").value || "None selected";
+	  const maxCost = document.getElementById("maxCost").value || "0";
+	  const totalCost = document.getElementById("totalCost").textContent || "0";
+
+	  exportText += `Faction: ${faction}\n`;
+	  exportText += `Total gp: ${totalCost}\n`;
+	  exportText += `Max gp: ${maxCost}\n`;
+	  exportText += `----------------------\n`;
+
+	  for (let i = 0; i < unitId; i++) {
+		const unitBlock = document.getElementById(`unit-${i}`);
+		if (!unitBlock) continue;
+
+		const unitTypeElem = document.getElementById(`unitType-${i}`);
+		const qtyElem = document.getElementById(`unitQuantity-${i}`);
+		if (!unitTypeElem || !qtyElem) continue;
+
+		const unitType = unitTypeElem.value;
+		const quantity = Math.max(1, parseInt(qtyElem.value));
+		const factionDataForUnit = factionData[faction]?.[unitType];
+		const baseCost = factionDataForUnit?.base || 0;
+
+		let unitCost = baseCost;
+		let optionsText = "";
+
+		// Collect selected options:
+		const checkboxes = unitBlock.querySelectorAll(".optionCheckbox");
+		let optionsSelected = [];
+		checkboxes.forEach(cb => {
+		  if (cb.checked) {
+			const cost = parseInt(cb.dataset.cost || '0');
+			unitCost += cost;
+			optionsSelected.push(`   - ${cb.value} (${cost})`);
+		  }
+		});
+
+		const blockTotal = unitCost * quantity;
+		exportText += `• ${unitType} (${quantity} × ${unitCost} = ${blockTotal})\n`;
+		if (optionsSelected.length > 0) {
+		  exportText += optionsSelected.join("\n") + "\n";
+		}
+	  }
+
+	  output.textContent = exportText.trim();
+	}
+
+
+    function downloadExportedUnits() {
+      const text = document.getElementById("exportOutput").textContent;
+      const blob = new Blob([text], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "pillage_list.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function printExportedUnits() {
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write("<pre>" + document.getElementById("exportOutput").textContent + "</pre>");
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    }
+
+    function removeUnit(id) {
+      const block = document.getElementById(`unit-${id}`);
+      if (block) block.remove();
+      updateCost();
+    }
+
+    // Add a normal figure unit:
+    function addUnit(unitType = "Warrior") {
+      const faction = document.getElementById("factionSelect").value;
+      if (!faction) {
+        alert("Please select a faction first.");
+        return;
+      }
+      const container = document.getElementById("unitsContainer");
+      const block = document.createElement("div");
+      block.className = "unit-block";
+      block.id = `unit-${unitId}`;
+
+      block.innerHTML = `
+        <label for="unitType-${unitId}">Unit Type:</label>
+        <select id="unitType-${unitId}" onchange="buildOptions(${unitId});">
+          ${Object.keys(factionData[faction])
+            .map(
+              (ut) =>
+                `<option value="${ut}" ${
+                  ut === unitType ? "selected" : ""
+                }>${ut}</option>`
+            )
+            .join("")}
+        </select>
+        &nbsp;&nbsp;
+        <label for="unitQuantity-${unitId}">Quantity:</label>
+        <input type="number" id="unitQuantity-${unitId}" value="1" min="1" onchange="updateCost()" />
+        <button onclick="removeUnit(${unitId})" style="margin-left:10px;">Remove</button>
+        <div id="options-${unitId}"></div>
+        <div id="unitCost-${unitId}" class="unit-cost-display"></div>
+      `;
+
+      container.appendChild(block);
+
+      // Build options, then update cost + export after options finish building:
+      buildOptions(unitId);
+      // Use setTimeout to wait for buildOptions to finish event binding and DOM update:
+      setTimeout(() => {
+        updateCost();
+      }, 0);
+
+      unitId++;
+    }
+
+    // Add a chieftain unit:
+    function addChieftain() {
+      addUnit("Chieftain");
+    }
+
+    document.getElementById("addUnitButton").addEventListener("click", () => addUnit());
+    document.getElementById("addChieftainButton").addEventListener("click", addChieftain);
+
+    document.getElementById("factionSelect").addEventListener("change", () => {
+      document.getElementById("unitsContainer").innerHTML = "";
+      unitId = 0;
+      updateCost();
+    });
+
+    document.getElementById("maxCost").addEventListener("input", updateCost);
+
+    // Initialize
+    populateFactions();
+  </script>
+</body>
+<footer style="text-align: center; margin-top: 50px; font-size: 0.9em; color: #666;">
+  <p>Pillage designed by Guillaume Rousselot (Noodle Wargames), published by Victrix Limited.</p>
+</footer>
+</html>
