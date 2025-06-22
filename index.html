@@ -6,188 +6,199 @@
   <title>Pillage List Builder</title>
   <style>
 	  body {
-		font-family: 'Georgia', serif;
-		background-color: white;
-		color: black;
-		margin: 10px;
-	  }
-
-	  h1 {
-		font-size: 1.8em;
-		font-weight: bold;
-		text-align: center;
-		color: #333;
-		border-bottom: 2px solid #999;
-		padding-bottom: 10px;
-	  }
-
-	  label {
-		font-weight: bold;
-		color: #222;
-		display: block;
-		margin-bottom: 6px;
-	  }
-
-	  select,
-	  input[type="number"] {
-		background-color: #fff;
-		color: #000;
-		border: 1px solid #666;
-		padding: 8px;
-		border-radius: 4px;
-		font-size: 16px;
-		width: 100%;
-		box-sizing: border-box;
-		margin-bottom: 10px;
-	  }
-
-	  button {
-		background-color: #444;
-		color: #fff;
-		border: none;
-		padding: 10px 16px;
-		margin: 5px 3px;
-		border-radius: 4px;
-		cursor: pointer;
-		font-family: 'Georgia', serif;
-		font-size: 16px;
-		width: 100%;
-		box-sizing: border-box;
-	  }
-
-	  button:hover {
-		background-color: #666;
-	  }
-
-	  #unitsContainer {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	  }
-
-	  .unit-block {
-		background-color: #f9f9f9;
-		border: 1px solid #ccc;
-		padding: 10px;
-		border-radius: 5px;
-		width: 100%;
-		box-sizing: border-box;
-		margin-bottom: 10px;
-	  }
-
-	  .unit-cost-display {
-		font-weight: bold;
-		margin-top: 6px;
-		color: #003366;
-		font-size: 14px;
-	  }
-
-	  .warning {
-		color: #c00;
-		font-weight: bold;
-		margin-top: 10px;
-	  }
-
-	  pre {
-		background-color: #f0f0f0;
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		white-space: pre-wrap;
-		font-family: 'Georgia', serif;
-		font-size: 14px;
-		line-height: 1.6;
-		box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-		overflow-x: auto;
-	  }
-
-	  .options-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-		margin-top: 8px;
-	  }
-
-	  .options-column {
-		flex: 1 1 45%;
-		border: 1px solid #ccc;
-		padding: 6px 10px;
-		border-radius: 5px;
-		background: #fff;
-		min-width: 140px;
-	  }
-
-	  .options-column label {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		font-weight: normal;
-		margin-bottom: 4px;
-		cursor: pointer;
-	  }
-
-	  /* Layout adjustment */
-	  #mainLayout {
-		display: flex;
-		flex-direction: row;
-		gap: 20px;
-		align-items: flex-start;
-		margin-top: 20px;
-	  }
-
-	  #unitsWrapper {
-		flex: 1;
-	  }
-
-	  #exportWrapper {
-		flex: 1;
-		gap: 20px;
-		padding: 20px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		z-index: 1000;
-	  }
-
-	  /* MOBILE STYLES */
-	  @media (max-width: 768px) {
-		#mainLayout {
-		  flex-direction: column;
-		}
-
-		button {
-		  width: 100%;
-		}
-
-		.options-column {
-		  flex: 1 1 100%;
+		  font-family: 'Georgia', serif;
+		  background-color: #121212;
+		  color: #ddd;
+		  margin: 10px;
 		}
 
 		h1 {
-		  font-size: 1.5em;
+		  font-size: 1.8em;
+		  font-weight: bold;
+		  text-align: center;
+		  color: #eee;
+		  border-bottom: 2px solid #555;
+		  padding-bottom: 10px;
+		}
+
+		label {
+		  font-weight: bold;
+		  color: #ccc;
+		  display: block;
+		  margin-bottom: 6px;
+		}
+
+		select,
+		input[type="number"] {
+		  background-color: #222;
+		  color: #eee;
+		  border: 1px solid #555;
+		  padding: 8px;
+		  border-radius: 4px;
+		  font-size: 16px;
+		  width: 100%;
+		  box-sizing: border-box;
+		  margin-bottom: 10px;
+		}
+
+		button {
+		  background-color: #333;
+		  color: #eee;
+		  border: none;
+		  padding: 10px 16px;
+		  margin: 5px 3px;
+		  border-radius: 4px;
+		  cursor: pointer;
+		  font-family: 'Georgia', serif;
+		  font-size: 16px;
+		  width: 100%;
+		  box-sizing: border-box;
+		}
+
+		button:hover {
+		  background-color: #555;
+		}
+
+		#unitsContainer {
+		  display: flex;
+		  flex-direction: column;
+		  gap: 10px;
+		}
+
+		.unit-block {
+		  background-color: #1e1e1e;
+		  border: 1px solid #444;
+		  padding: 10px;
+		  border-radius: 5px;
+		  width: 100%;
+		  box-sizing: border-box;
+		  margin-bottom: 10px;
+		}
+
+		.unit-cost-display {
+		  font-weight: bold;
+		  margin-top: 6px;
+		  color: #88c0d0;
+		  font-size: 14px;
+		}
+
+		.warning {
+		  color: #ff5555;
+		  font-weight: bold;
+		  margin-top: 10px;
+		}
+
+		pre {
+		  background-color: #222;
+		  color: #ddd;
+		  padding: 10px;
+		  border: 1px solid #555;
+		  border-radius: 5px;
+		  white-space: pre-wrap;
+		  font-family: 'Georgia', serif;
+		  font-size: 14px;
+		  line-height: 1.6;
+		  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+		  overflow-x: auto;
+		}
+
+		.options-container {
+		  display: flex;
+		  flex-wrap: wrap;
+		  gap: 10px;
+		  margin-top: 8px;
+		}
+
+		.options-column {
+		  flex: 1 1 45%;
+		  border: 1px solid #555;
+		  padding: 6px 10px;
+		  border-radius: 5px;
+		  background: #1a1a1a;
+		  min-width: 140px;
+		}
+
+		.options-column label {
+		  display: flex;
+		  align-items: center;
+		  gap: 6px;
+		  font-weight: normal;
+		  margin-bottom: 4px;
+		  cursor: pointer;
+		  color: #ccc;
+		}
+
+		#mainLayout {
+		  display: flex;
+		  flex-direction: row;
+		  gap: 20px;
+		  align-items: flex-start;
+		  margin-top: 20px;
+		}
+
+		#unitsWrapper {
+		  flex: 1;
 		}
 
 		#exportWrapper {
-		  padding: 10px;
+		  flex: 1;
+		  gap: 20px;
+		  padding: 20px;
+		  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+		  background-color: #1e1e1e;
+		  color: #ddd;
+		  z-index: 1000;
 		}
-	  }
-	.unit-summary {
-	  font-size: 14px;
-	  background: #eef;
-	  padding: 6px;
-	  border-radius: 4px;
-	  margin-top: 6px;
-	  white-space: pre-wrap;
-	}
 
-	.collapse-button {
-	  background-color: #888;
-	  color: white;
-	  font-size: 0.9em;
-	  padding: 4px 8px;
-	  border: none;
-	  border-radius: 4px;
-	  cursor: pointer;
-	}
+		@media (max-width: 768px) {
+		  #mainLayout {
+			flex-direction: column;
+		  }
 
+		  button {
+			width: 100%;
+		  }
+
+		  .options-column {
+			flex: 1 1 100%;
+		  }
+
+		  h1 {
+			font-size: 1.5em;
+		  }
+
+		  #exportWrapper {
+			padding: 10px;
+		  }
+		}
+
+		.unit-summary {
+		  font-size: 14px;
+		  background: #2a2a3a;
+		  padding: 6px;
+		  border-radius: 4px;
+		  margin-top: 6px;
+		  white-space: pre-wrap;
+		  color: #ccc;
+		}
+
+		.collapse-button {
+		  background-color: #555;
+		  color: white;
+		  font-size: 0.9em;
+		  padding: 4px 8px;
+		  border: none;
+		  border-radius: 4px;
+		  cursor: pointer;
+		}
+
+		footer {
+		  color: #888;
+		  background-color: #121212;
+		  margin-top: 50px;
+		  font-size: 0.9em;
+		  text-align: center;
+		}
 
 	</style>
 
@@ -488,14 +499,47 @@
       URL.revokeObjectURL(url);
     }
 
-    function printExportedUnits() {
-      const printWindow = window.open("", "_blank");
-      printWindow.document.write("<pre>" + document.getElementById("exportOutput").textContent + "</pre>");
-      printWindow.document.close();
-      printWindow.focus();
-      printWindow.print();
-      printWindow.close();
-    }
+	function printExportedUnits() {
+	  const content = document.getElementById("exportOutput").textContent;
+	  const printWindow = window.open("", "_blank");
+
+	  printWindow.document.write(`
+		<html>
+		  <head>
+			<title>Pillage</title>
+			<style>
+			  body { font-family: 'Georgia', serif; margin: 20px; }
+			  h1 { text-align: center; }
+			  footer { 
+				margin-top: 30px; 
+				font-size: 0.9em; 
+				text-align: center; 
+				color: #555; 
+				font-style: italic;
+			  }
+			  pre {
+				white-space: pre-wrap;
+				font-family: 'Georgia', serif;
+				font-size: 14px;
+			  }
+			</style>
+		  </head>
+		  <body>
+			<h1>Pillage Army List</h1>
+			<pre>${content}</pre>
+			<footer>
+			  Pillage designed by Guillaume Rousselot (Noodle Wargames), published by Victrix Limited.
+			</footer>
+		  </body>
+		</html>
+	  `);
+
+	  printWindow.document.close();
+	  printWindow.focus();
+	  printWindow.print();
+	  printWindow.close();
+	}
+
 
     function removeUnit(id) {
       const block = document.getElementById(`unit-${id}`);
