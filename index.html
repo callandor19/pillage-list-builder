@@ -2,143 +2,221 @@
 <html>
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pillage List Builder</title>
   <style>
-    body {
-      font-family: 'Georgia', serif;
-      background-color: white;
-      color: black;
-      margin: 20px;
-    }
-    h1 {
-      font-size: 2em;
-      font-weight: bold;
-      text-align: center;
-      color: #333;
-      border-bottom: 2px solid #999;
-      padding-bottom: 10px;
-    }
-    label {
-      font-weight: bold;
-      color: #222;
-      display: block;
-      margin-bottom: 6px;
-    }
-    select,
-    input[type="number"] {
-      background-color: #fff;
-      color: #000;
-      border: 1px solid #666;
-      padding: 4px;
-      border-radius: 4px;
-    }
-    button {
-      background-color: #444;
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      margin: 5px 3px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: 'Georgia', serif;
-    }
-    button:hover {
-      background-color: #666;
-    }
-    #unitsContainer {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .unit-block {
-      background-color: #f9f9f9;
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 5px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 10px;
-    }
-    .unit-cost-display {
-      font-weight: bold;
-      margin-top: 6px;
-      color: #003366;
-      font-size: 14px;
-    }
-    .warning {
-      color: #c00;
-      font-weight: bold;
-    }
-    pre {
-      background-color: #f0f0f0;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      white-space: pre-wrap;
-      font-family: 'Georgia', serif;
-      font-size: 14px;
-      line-height: 1.6;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-    }
-    /* Checkbox container columns for options */
-    .options-container {
-      display: flex;
-      gap: 20px;
-      margin-top: 8px;
-    }
-    .options-column {
-      flex: 1;
-      border: 1px solid #ccc;
-      padding: 6px 10px;
-      border-radius: 5px;
-      background: #fff;
-    }
-    .options-column label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: normal;
-      margin-bottom: 4px;
-      cursor: pointer;
-    }
-  </style>
+	  body {
+		font-family: 'Georgia', serif;
+		background-color: white;
+		color: black;
+		margin: 10px;
+	  }
+
+	  h1 {
+		font-size: 1.8em;
+		font-weight: bold;
+		text-align: center;
+		color: #333;
+		border-bottom: 2px solid #999;
+		padding-bottom: 10px;
+	  }
+
+	  label {
+		font-weight: bold;
+		color: #222;
+		display: block;
+		margin-bottom: 6px;
+	  }
+
+	  select,
+	  input[type="number"] {
+		background-color: #fff;
+		color: #000;
+		border: 1px solid #666;
+		padding: 8px;
+		border-radius: 4px;
+		font-size: 16px;
+		width: 100%;
+		box-sizing: border-box;
+		margin-bottom: 10px;
+	  }
+
+	  button {
+		background-color: #444;
+		color: #fff;
+		border: none;
+		padding: 10px 16px;
+		margin: 5px 3px;
+		border-radius: 4px;
+		cursor: pointer;
+		font-family: 'Georgia', serif;
+		font-size: 16px;
+		width: 100%;
+		box-sizing: border-box;
+	  }
+
+	  button:hover {
+		background-color: #666;
+	  }
+
+	  #unitsContainer {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	  }
+
+	  .unit-block {
+		background-color: #f9f9f9;
+		border: 1px solid #ccc;
+		padding: 10px;
+		border-radius: 5px;
+		width: 100%;
+		box-sizing: border-box;
+		margin-bottom: 10px;
+	  }
+
+	  .unit-cost-display {
+		font-weight: bold;
+		margin-top: 6px;
+		color: #003366;
+		font-size: 14px;
+	  }
+
+	  .warning {
+		color: #c00;
+		font-weight: bold;
+		margin-top: 10px;
+	  }
+
+	  pre {
+		background-color: #f0f0f0;
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		white-space: pre-wrap;
+		font-family: 'Georgia', serif;
+		font-size: 14px;
+		line-height: 1.6;
+		box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+		overflow-x: auto;
+	  }
+
+	  .options-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-top: 8px;
+	  }
+
+	  .options-column {
+		flex: 1 1 45%;
+		border: 1px solid #ccc;
+		padding: 6px 10px;
+		border-radius: 5px;
+		background: #fff;
+		min-width: 140px;
+	  }
+
+	  .options-column label {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-weight: normal;
+		margin-bottom: 4px;
+		cursor: pointer;
+	  }
+
+	  /* Layout adjustment */
+	  #mainLayout {
+		display: flex;
+		flex-direction: row;
+		gap: 20px;
+		align-items: flex-start;
+		margin-top: 20px;
+	  }
+
+	  #unitsWrapper {
+		flex: 1;
+	  }
+
+	  #exportWrapper {
+		flex: 1;
+		gap: 20px;
+		padding: 20px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		z-index: 1000;
+	  }
+
+	  /* MOBILE STYLES */
+	  @media (max-width: 768px) {
+		#mainLayout {
+		  flex-direction: column;
+		}
+
+		button {
+		  width: 100%;
+		}
+
+		.options-column {
+		  flex: 1 1 100%;
+		}
+
+		h1 {
+		  font-size: 1.5em;
+		}
+
+		#exportWrapper {
+		  padding: 10px;
+		}
+	  }
+	.unit-summary {
+	  font-size: 14px;
+	  background: #eef;
+	  padding: 6px;
+	  border-radius: 4px;
+	  margin-top: 6px;
+	  white-space: pre-wrap;
+	}
+
+	.collapse-button {
+	  background-color: #888;
+	  color: white;
+	  font-size: 0.9em;
+	  padding: 4px 8px;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	}
+
+
+	</style>
+
 </head>
 <body>
   <h1>Pillage List Builder</h1>
 
   <label for="factionSelect">Select Faction:</label>
-  <select id="factionSelect">
+  <select id="factionSelect" style="width: max-content">
     <option value="">--Choose a faction--</option>
   </select>
 
   <div>
     <label for="maxCost">Max Cost:</label>
-    <input type="number" id="maxCost" value="500" />
+    <input type="number" id="maxCost" value="500" style="width: 120px;" />
   </div>
 
-  <div
-    id="mainLayout"
-    style="display: flex; gap: 20px; align-items: flex-start; margin-top: 20px;"
-  >
-    <div id="unitsWrapper" style="flex: 1;">
+  <div id="mainLayout">
+    <div id="unitsWrapper">
       <div id="unitsContainer"></div>
       <button id="addUnitButton">Add Figure</button>
       <button id="addChieftainButton">Add Chieftain</button>
     </div>
 
-    <div
-      id="exportWrapper"
-      style="
-        flex: 1;
-        gap: 20px;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-      "
-    >
+    <div id="exportWrapper">
       <h2>Total Cost: <span id="totalCost">0</span></h2>
       <div id="warning" class="warning"></div>
-      <button onclick="downloadExportedUnits()">Download as .txt</button>
+      <button onclick="copyExportedUnits()">Copy to Clipboard</button>
+	  <button onclick="downloadExportedUnits()">Download as .txt</button>
       <button onclick="printExportedUnits()">Print</button>
       <pre id="exportOutput"></pre>
     </div>
@@ -179,11 +257,11 @@
         return;
       }
 
-      let baseCostText = `<p>Base Cost: ${unitData.base}</p>`;
+      let baseCostText = '';
 
-      // Prepare columns for checkbox groups:
-      let columns = {
-        Protection: [],
+      // Prepare columns for checkbox groups
+	  let columns = {
+		Protection: [],
         Melee: [],
 		Ranged: [],
         Special: [],
@@ -199,7 +277,7 @@
         // Create a label for each option with checkbox:
         for (let optName in opts) {
           const cost = opts[optName];
-          const isDefault = false
+          const isDefault = false;
            
           columns[colKey].push(
             `<label><input type="checkbox" class="optionCheckbox" data-category="${category}" data-cost="${cost}" value="${optName}" ${
@@ -302,7 +380,7 @@
         const costDisplay = document.getElementById(`unitCost-${i}`);
         if (costDisplay) {
           const blockTotal = perUnitCost * quantity;
-          costDisplay.textContent = `Cost per figure: ${perUnitCost} (${blockTotal} total)`;
+          costDisplay.textContent = `Cost per figure: ${perUnitCost} gp (${blockTotal} total)`;
         }
       }
 
@@ -348,7 +426,7 @@
 
 	  exportText += `Faction: ${faction}\n`;
 	  exportText += `Total gp: ${totalCost}\n`;
-	  exportText += `Max gp: ${maxCost}\n`;
+	  exportText += `Max Cost: ${maxCost}\n`;
 	  exportText += `----------------------\n`;
 
 	  for (let i = 0; i < unitId; i++) {
@@ -388,6 +466,16 @@
 	  output.textContent = exportText.trim();
 	}
 
+	function copyExportedUnits() {
+	  const text = document.getElementById("exportOutput").textContent;
+	  navigator.clipboard.writeText(text).then(() => {
+		alert("Exported list copied to clipboard!");
+	  }).catch(err => {
+		console.error("Failed to copy text: ", err);
+		alert("Failed to copy. Try again.");
+	  });
+	}
+
 
     function downloadExportedUnits() {
       const text = document.getElementById("exportOutput").textContent;
@@ -417,52 +505,94 @@
 
     // Add a normal figure unit:
     function addUnit(unitType = "Warrior") {
-      const faction = document.getElementById("factionSelect").value;
-      if (!faction) {
-        alert("Please select a faction first.");
-        return;
-      }
-      const container = document.getElementById("unitsContainer");
-      const block = document.createElement("div");
-      block.className = "unit-block";
-      block.id = `unit-${unitId}`;
+	  const faction = document.getElementById("factionSelect").value;
+	  if (!faction) {
+		alert("Please select a faction first.");
+		return;
+	  }
 
-      block.innerHTML = `
-        <label for="unitType-${unitId}">Unit Type:</label>
-        <select id="unitType-${unitId}" onchange="buildOptions(${unitId});">
-          ${Object.keys(factionData[faction])
-            .map(
-              (ut) =>
-                `<option value="${ut}" ${
-                  ut === unitType ? "selected" : ""
-                }>${ut}</option>`
-            )
-            .join("")}
-        </select>
-        &nbsp;&nbsp;
-        <label for="unitQuantity-${unitId}">Quantity:</label>
-        <input type="number" id="unitQuantity-${unitId}" value="1" min="1" onchange="updateCost()" />
-        <button onclick="removeUnit(${unitId})" style="margin-left:10px;">Remove</button>
-        <div id="options-${unitId}"></div>
-        <div id="unitCost-${unitId}" class="unit-cost-display"></div>
-      `;
+	  const container = document.getElementById("unitsContainer");
+	  const block = document.createElement("div");
+	  block.className = "unit-block";
+	  block.id = `unit-${unitId}`;
 
-      container.appendChild(block);
+	  block.innerHTML = `
+		<div id="unitControls-${unitId}">
+		  <label for="unitType-${unitId}">Unit Type:</label>
+		  <select id="unitType-${unitId}" style="width: max-content;" onchange="buildOptions(${unitId});">
+			${Object.keys(factionData[faction])
+			  .map((ut) => {
+				const base = factionData[faction][ut]?.base ?? "?";
+				return `<option value="${ut}" ${ut === unitType ? "selected" : ""}>${ut} (${base} gp)</option>`;
+			  })
+			  .join("")}
+		  </select>
 
-      // Build options, then update cost + export after options finish building:
-      buildOptions(unitId);
-      // Use setTimeout to wait for buildOptions to finish event binding and DOM update:
-      setTimeout(() => {
-        updateCost();
-      }, 0);
+		  <label for="unitQuantity-${unitId}" style="margin-left:10px;">Qty:</label>
+		  <input type="number" id="unitQuantity-${unitId}" value="1" min="1" onchange="updateCost()" style="width: 60px;" />
+		</div>
 
-      unitId++;
-    }
+		<div class="unit-details" id="unitDetails-${unitId}">
+		  <div id="unitCost-${unitId}" class="unit-cost-display"></div>
+		  <div id="options-${unitId}" style="margin-top: 10px;"></div>
+		</div>
+
+		<div class="unit-summary" id="unitSummary-${unitId}" style="display:none;"></div>
+
+		<div class="unit-actions" style="margin-top: 8px;">
+		  <button onclick="toggleCollapse(${unitId})" class="collapse-button">Collapse</button>
+		  <button onclick="removeUnit(${unitId})" >Remove</button>
+		</div>
+	  `;
+
+	  container.appendChild(block);
+	  buildOptions(unitId);
+	  setTimeout(() => updateCost(), 0);
+
+	  unitId++;
+	}
+
+
 
     // Add a chieftain unit:
     function addChieftain() {
       addUnit("Chieftain");
     }
+
+	// Collapse a unit block
+	function toggleCollapse(id) {
+	  const details = document.getElementById(`unitDetails-${id}`);
+	  const summary = document.getElementById(`unitSummary-${id}`);
+	  const controls = document.getElementById(`unitControls-${id}`);
+	  const toggleBtn = document.querySelector(`#unit-${id} .collapse-button`);
+
+	  const isCollapsed = details.style.display === "none";
+
+	  if (isCollapsed) {
+		// Expand
+		details.style.display = "block";
+		summary.style.display = "none";
+		controls.style.display = "block";
+		toggleBtn.textContent = "Collapse";
+	  } else {
+		// Collapse
+		details.style.display = "none";
+		summary.style.display = "block";
+		controls.style.display = "none";
+		toggleBtn.textContent = "Expand";
+
+		// Build summary
+		const type = document.getElementById(`unitType-${id}`).value;
+		const qty = document.getElementById(`unitQuantity-${id}`).value;
+		const checkboxes = document.querySelectorAll(`#unit-${id} .optionCheckbox:checked`);
+		const options = Array.from(checkboxes).map(cb => cb.value).join(", ") || "None";
+		const costText = document.getElementById(`unitCost-${id}`)?.textContent || "";
+
+		summary.textContent = `${type} ×${qty}\n${options}\n${costText}`;
+	  }
+	}
+
+
 
     document.getElementById("addUnitButton").addEventListener("click", () => addUnit());
     document.getElementById("addChieftainButton").addEventListener("click", addChieftain);
