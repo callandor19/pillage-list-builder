@@ -1,5 +1,5 @@
 const factionData = {
-"Generic": {
+"(Generic)": {
     "Warrior": {
       "base": 10,
       "options": {
