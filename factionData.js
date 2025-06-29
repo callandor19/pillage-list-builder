@@ -1,4 +1,137 @@
 const factionData = {
+"Generic": {
+    "Warrior": {
+      "base": 10,
+      "options": {
+        "Protection": {
+          "Unarmoured": 0,
+          "Armour": 5,
+          "Shield": 5
+        },
+        "Melee Weapon": {
+          "Improvised Weapon": 0,
+          "Spear": 5,
+          "Hand Weapon": 10,
+          "Dane Axe": 15
+        },
+        "Ranged Weapon": {
+          "Sling": 5,
+          "Javelin": 10,
+          "Bow": 20,
+	  "Crossbow": 30
+        },
+        "Special Equipment": {
+          "Horse": 30,
+          "Banner": 50,
+          "Warhorn": 25,
+	  "Warhounds": 40
+        }
+      }
+    },
+    "Chieftain": {
+      "base": 30,
+      "options": {
+        "Protection": {
+          "Unarmoured": 0,
+          "Armour": 5,
+          "Shield": 5
+        },
+        "Melee Weapon": {
+          "Improvised Weapon": 0,
+          "Spear": 5,
+          "Hand Weapon": 10,
+          "Dane Axe": 15
+        },
+        "Ranged Weapon": {
+          "Sling": 5,
+          "Javelin": 10,
+          "Bow": 20,
+	  "Crossbow": 30
+        },
+        "Special Equipment": {
+          "Horse": 30,
+          "Banner": 50,
+          "Warhorn": 25
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Lewd Provocation": 5,
+		  "Marksmanship Training": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Poison Specialist": 40,
+		  "Shield Training": 30,
+		  "Swift as Lightning": 50,
+		  "War of Fire": 30
+		}
+	  }
+    },
+    "Berserker": {
+      "base": 50,
+      "options": {
+        "Protection": {
+          "Unarmoured": 0,
+          "Armour": 5,
+          "Shield": 5
+        },
+        "Melee Weapon": {
+          "Improvised Weapon": 0,
+          "Spear": 5,
+          "Hand Weapon": 10,
+          "Dane Axe": 15
+        },
+	"Special Equipment": {
+          "Banner": 50,
+          "Warhorn": 20
+        }
+      }
+    },
+    "Huscarl": {
+      "base": 40,
+      "options": {
+        "Protection": {
+          "Unarmoured": 0,
+          "Armour": 5,
+          "Shield": 5
+        },
+        "Melee Weapon": {
+          "Hand Weapon": 10,
+          "Dane Axe": 15
+        },
+        "Ranged Weapon": {},
+        "Special Equipment": {
+          "Horse": 30
+        }
+      }
+    },
+    "Healer": {
+      "base": 30,
+      "options": {
+        "Protection": {
+          "Unarmoured": 0
+        },
+        "Melee Weapon": {
+          "Improvised Weapon": 0
+        },
+        "Ranged Weapon": {},
+        "Special Equipment": {}
+      }
+    },
+	 "Wagon": {
+      "base": 40,
+      "options": {
+        "Protection": {},
+        "Melee Weapon": {},
+        "Ranged Weapon": {},
+        "Special Equipment": {}
+      }
+    }
+  },
+
   "Anglo-Saxons": {
     "Warrior": {
       "base": 10,
@@ -49,7 +182,25 @@ const factionData = {
           "Horse": 35,
           "Banner": 50,
           "Warhorn": 25
-        }
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Lewd Provocation": 5,
+		  "Marksmanship Training": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Poison Specialist": 40,
+		  "Relic Bearer": 60,
+		  "Shield Training": 30,
+		  "Slayer of Pagans": 40,
+		  "Swift as Lightning": 50,
+		  "Thegn": 15,
+		  "War of Fire": 30
+		}
       }
     },
     "Huscarl": {
@@ -136,7 +287,24 @@ const factionData = {
           "Horse": 20,
           "Banner": 50,
           "Warhorn": 20
-        }
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Lewd Provocation": 5,
+		  "Marksmanship Training": 40,
+		  "Master of Evasion": 40,
+		  "Master Stalker": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Poison Specialist": 40,
+		  "Shield Training": 30,
+		  "Swift as Lightning": 50,
+		  "War of Fire": 30
+		}
       }
     },
     "Healer": {
@@ -210,7 +378,23 @@ const factionData = {
           "Horse": 25,
           "Banner": 45,
           "Warhorn": 20
-        }
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Backhander": 50,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Lewd Provocation": 5,
+		  "Marksmanship Training": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Poison Specialist": 40,
+		  "Shield Training": 30,
+		  "Swift as Lightning": 50,
+		  "War of Fire": 30
+		}
       }
     },
     "Kataphraktos": {
@@ -281,7 +465,22 @@ const factionData = {
           "Horse": 25,
           "Banner": 20,
           "Warhorn": 25
-        }
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Marksmanship Training": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Poison Specialist": 40,
+		  "Shield Training": 30,
+		  "Slayer of Pagans": 40,
+		  "Swift as Lightning": 50,
+		  "War of Fire": 30
+		}
       }
     },
     "Healer": {
@@ -351,7 +550,23 @@ const factionData = {
         },
         "Special Equipment": {
           "Horse": 20
-        }
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Lewd Provocation": 5,
+		  "Marksmanship Training": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Poison Specialist": 40,
+		  "Shield Training": 30,
+		  "Spare Horses": 50,
+		  "Swift as Lightning": 50,
+		  "War of Fire": 30
+		}
       }
     },
     "Bok": {
@@ -427,7 +642,25 @@ const factionData = {
         },
 	"Special Equipment": {
           "Warhorn": 30
-        }
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Dog Trainer (10 per pack master)": 10,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Lewd Provocation": 5,
+		  "Marksmanship Training": 40,
+		  "Lewd Provocation": 5,
+		  "Master of Evasion": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Poison Specialist": 40,
+		  "Shield Training": 30,
+		  "Swift as Lightning": 50,
+		  "War of Fire": 30
+		}
       }
     },
     "Healer": {
@@ -495,7 +728,24 @@ const factionData = {
           "Horse": 20,
           "Banner": 50,
           "Warhorn": 40
-        }
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Marksmanship Training": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Poison Specialist": 40,
+		  "Relic Bearer": 60,
+		  "Shield Training": 30,
+		  "Slayer of Pagans": 40,
+		  "Swift as Lightning": 50,
+		  "War of Fire": 30,
+		  "Warhorses": 50
+		}
       }
     },
     "Healer": {
@@ -573,7 +823,23 @@ const factionData = {
           "Horse": 30,
           "Banner": 50,
           "Warhorn": 25
-        }
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Lewd Provocation": 5,
+		  "Loyal to the Emperor": 25,
+		  "Marksmanship Training": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Poison Specialist": 40,
+		  "Shield Training": 30,
+		  "Swift as Lightning": 50,
+		  "War of Fire": 30
+		}
       }
     },
     "Berserker": {
@@ -649,7 +915,23 @@ const factionData = {
 	"Special Equipment": {
           "Banner": 50,
           "Warhorn": 20
-        }
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Lewd Provocation": 5,
+		  "Marksmanship Training": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Odin's Sight": 10,
+		  "Poison Specialist": 40,
+		  "Shield Training": 30,
+		  "Swift as Lightning": 50,
+		  "War of Fire": 30
+		}
       }
     },
     "Berserker": {
@@ -736,7 +1018,23 @@ const factionData = {
         "Special Equipment": {
           "Horse": 35,
           "Warhorn": 20
-        }
+        },
+       "Talents": {
+		  "Athletic Training": 50,
+		  "Force of Nature": 30,
+		  "Grand Marshal of Horses": 30,
+		  "Hunter": 50,
+		  "King of Ambushes": 50,
+		  "Lewd Provocation": 5,
+		  "Marksmanship Training": 40,
+		  "Master of the Long Knife": 40,
+		  "Mead Merchant": 40,
+		  "Molesight": 30,
+		  "Poison Specialist": 40,
+		  "Shield Training": 30,
+		  "Swift as Lightning": 50,
+		  "War of Fire": 30
+		}
       }
     },
     "Healer": {
