@@ -411,12 +411,12 @@
       if (bannerCount > 1) warnings.push("⚠️ Only one Banner is allowed.");
       if (warhornCount > 1) warnings.push("⚠️ Only one Warhorn is allowed.");
 
-      const maxRanged = Math.floor(unitCount * 0.25);
+      const maxRanged = Math.ceil(unitCount * 0.25);
       if (rangedWeaponUnits > maxRanged)
         warnings.push(
           `⚠️ Only up to 25% of figures can have a ranged weapon. (${rangedWeaponUnits}/${maxRanged} allowed)`
         );
-      const maxHorse = Math.floor(unitCount * 0.25);
+      const maxHorse = Math.ceil(unitCount * 0.25);
       if (horseCount > maxHorse)
         warnings.push(
           `⚠️ Only up to 25% of figures can be mounted. (${horseCount}/${maxHorse} allowed)`
