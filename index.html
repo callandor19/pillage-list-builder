@@ -254,77 +254,86 @@
       "Melee Weapon": "Melee",
       "Ranged Weapon": "Ranged",
       "Special Equipment": "Special",
+	  Talents: "Talents"
     };
 
     // Build checkboxes options for a unit
     function buildOptions(id) {
-      const faction = document.getElementById("factionSelect").value;
-      if (!faction) return;
+	  const faction = document.getElementById("factionSelect").value;
+	  if (!faction) return;
 
-      const unitType = document.getElementById(`unitType-${id}`).value;
-      const unitData = factionData[faction][unitType];
-      if (!unitData) {
-        document.getElementById(`options-${id}`).innerHTML = "";
-        return;
-      }
+	  const unitType = document.getElementById(`unitType-${id}`).value;
+	  const unitData = factionData[faction][unitType];
+	  if (!unitData) {
+		document.getElementById(`options-${id}`).innerHTML = "";
+		return;
+	  }
 
-      let baseCostText = '';
+	  let baseCostText = '';
 
-      // Prepare columns for checkbox groups
+	  // Prepare columns
 	  let columns = {
 		Protection: [],
-        Melee: [],
+		Melee: [],
 		Ranged: [],
-        Special: [],
-      };
+		Special: [],
+		Talents: []
+	  };
 
-      // For each category, create checkboxes grouped into the right column:
-      for (let category in unitData.options) {
-        const opts = unitData.options[category];
-        if (!opts || Object.keys(opts).length === 0) continue;
+	  // Render all categories from unitData.options
+	  for (let category in unitData.options) {
+		const opts = unitData.options[category];
+		if (!opts || Object.keys(opts).length === 0) continue;
 
-        let colKey = optionColumnsMap[category] || "Special";
+		let colKey = optionColumnsMap[category] || "Special";
 
-        // Create a label for each option with checkbox:
-        for (let optName in opts) {
-          const cost = opts[optName];
-          const isDefault = false;
-           
-          columns[colKey].push(
-            `<label><input type="checkbox" class="optionCheckbox" data-category="${category}" data-cost="${cost}" value="${optName}" ${
-              isDefault ? "checked" : ""
-            } /> ${optName} (${cost})</label>`
-          );
-        }
-      }
+		for (let optName in opts) {
+		  const cost = opts[optName];
 
-      // Compose the HTML with columns:
-      let html = baseCostText + '<div class="options-container">';
-      for (const colName of ["Protection", "Melee", "Ranged", "Special"]) {
-        html += `<div class="options-column"><strong>${colName}</strong><br />`;
-        if (columns[colName].length > 0) {
-          html += columns[colName].join("\n");
-        } else {
-          html += "<em>None</em>";
-        }
-        html += "</div>";
-      }
-      html += "</div>";
+		  columns[colKey].push(
+			`<label><input type="checkbox" class="optionCheckbox" data-category="${category}" data-cost="${cost}" value="${optName}" /> ${optName} (${cost})</label>`
+		  );
+		}
+	  }
 
-      document.getElementById(`options-${id}`).innerHTML = html;
+	  // If Chieftain, add Talents from unitData.talents
+	  if (unitType === "Chieftain" && unitData.talents) {
+		for (let talentName in unitData.talents) {
+		  const cost = unitData.talents[talentName];
 
-      // Add event listeners to checkboxes to update cost on change:
-      const container = document.getElementById(`options-${id}`);
-      const checkboxes = container.querySelectorAll(".optionCheckbox");
-      checkboxes.forEach((cb) => {
-        cb.addEventListener("change", () => updateCost());
-      });
+		  columns.Talents.push(
+			`<label><input type="checkbox" class="optionCheckbox" data-category="Talents" data-cost="${cost}" value="${talentName}" /> ${talentName} (${cost})</label>`
+		  );
+		}
+	  }
 
-      // Update cost and export (small delay to ensure DOM updates)
-      setTimeout(() => {
-        updateCost();
-      }, 0);
-    }
+	  // Render all columns including Talents
+	  let html = baseCostText + '<div class="options-container">';
+	  for (const colName of ["Protection", "Melee", "Ranged", "Special", "Talents"]) {
+		  if (columns[colName].length === 0) continue; // ✅ Skip empty columns
+
+		  html += `<div class="options-column"><strong>${colName}</strong><br />`;
+		  html += columns[colName].join("\n");
+		  html += "</div>";
+		}
+
+	  html += "</div>";
+
+	  document.getElementById(`options-${id}`).innerHTML = html;
+
+	  // Add checkbox listeners
+	  const container = document.getElementById(`options-${id}`);
+	  const checkboxes = container.querySelectorAll(".optionCheckbox");
+	  checkboxes.forEach((cb) => {
+		cb.addEventListener("change", () => updateCost());
+	  });
+
+	  // Delay to update cost
+	  setTimeout(() => {
+		updateCost();
+	  }, 0);
+	}
+
 
     // Refresh cost preview and show export
     function updateCost() {
@@ -332,6 +341,7 @@
       if (!faction) return;
 
       let totalCost = 0;
+	  let warnings = [];
       let chieftainCount = 0,
         warriorCount = 0;
       let bannerCount = 0,
@@ -382,11 +392,25 @@
         unitCount += quantity;
 
         if (unitType === "Chieftain") chieftainCount += quantity;
+		  let selectedTalents = 0;
+		  checkboxes.forEach(cb => {
+			if (cb.checked && cb.dataset.category === "Talents") {
+			  selectedTalents++;
+			}
+		  });
+		  if (selectedTalents > 2) {
+			warnings.push(`⚠️ A Chieftain can have no more than 2 Talents (${selectedTalents}/2).`);
+		  }
+		
+
         if (unitType === "Warrior") warriorCount += quantity;
 
-        if (unitHasRangedWeapon) {
-          rangedWeaponUnits += quantity; // Count units with any ranged weapon(s)
-        }
+		const hasHorse = Array.from(checkboxes).some(cb => cb.checked && cb.dataset.category === "Special Equipment" && cb.value === "Horse");
+
+		if (unitHasRangedWeapon && !hasHorse) {
+		  rangedWeaponUnits += quantity; // Only count if not mounted
+		}
+
 
         const costDisplay = document.getElementById(`unitCost-${i}`);
         if (costDisplay) {
@@ -398,7 +422,6 @@
       document.getElementById("totalCost").textContent = totalCost;
 
       const max = parseInt(document.getElementById("maxCost").value);
-      let warnings = [];
 
       if (totalCost > max) warnings.push("⚠️ Cost exceeds maximum!");
       if (chieftainCount < 1)
